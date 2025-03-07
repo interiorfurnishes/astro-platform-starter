@@ -12,10 +12,138 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
 ---
 
 <Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-4" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="text-lg mb-10" />
-    <p class="mb-8">
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg btn-primary sm:btn-wide">Read the Docs</a>
-    </p>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My E-commerce Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1em 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1em;
+    }
+    .product {
+      border: 1px solid #ccc;
+      padding: 1em;
+      margin-bottom: 1em;
+      display: flex;
+      align-items: center;
+    }
+    .product img {
+      width: 150px;
+      height: auto;
+      margin-right: 1em;
+    }
+    .product-details {
+      flex: 1;
+    }
+    .add-to-cart {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 0.5em 1em;
+      cursor: pointer;
+    }
+    .cart {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 1em;
+      width: 250px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .cart h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My E-commerce Store</h1>
+  </header>
+  <div class="container">
+    <!-- Product 1 -->
+    <div class="product" data-id="1">
+      <img src="https://via.placeholder.com/150" alt="Product 1">
+      <div class="product-details">
+        <h2>Product 1</h2>
+        <p>$19.99</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+    <!-- Product 2 -->
+    <div class="product" data-id="2">
+      <img src="https://via.placeholder.com/150" alt="Product 2">
+      <div class="product-details">
+        <h2>Product 2</h2>
+        <p>$29.99</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+    <!-- Product 3 -->
+    <div class="product" data-id="3">
+      <img src="https://via.placeholder.com/150" alt="Product 3">
+      <div class="product-details">
+        <h2>Product 3</h2>
+        <p>$39.99</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart">
+    <h3>Your Cart</h3>
+    <ul id="cart-items"></ul>
+    <p>Total: $<span id="total">0.00</span></p>
+  </div>
+
+  <script>
+    const cart = [];
+    const cartItemsEl = document.getElementById('cart-items');
+    const totalEl = document.getElementById('total');
+
+    function updateCart() {
+      cartItemsEl.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+        cartItemsEl.appendChild(li);
+        total += item.price;
+      });
+      totalEl.textContent = total.toFixed(2);
+    }
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', function() {
+        const productEl = this.closest('.product');
+        const id = productEl.getAttribute('data-id');
+        const name = productEl.querySelector('h2').textContent;
+        const priceText = productEl.querySelector('p').textContent;
+        const price = parseFloat(priceText.replace('$', ''));
+        cart.push({ id, name, price });
+        updateCart();
+      });
+    });
+  </script>
+</body>
+</html>
+
 </Layout>
